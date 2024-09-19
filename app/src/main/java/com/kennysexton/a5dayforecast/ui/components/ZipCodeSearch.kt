@@ -38,6 +38,7 @@ fun ZipCodeSearch(innerPadding: PaddingValues) {
 
         TextField(value = zipCode, onValueChange = { zipCode = it })
 
+        // TODO: only enable search button if the user has entered in the right # of characters
         Button(onClick = { vm.getWeatherForecast(zipCode) }, modifier = Modifier.padding(16.dp)) {
             Text(text = "Search")
         }

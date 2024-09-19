@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.hilt.android)
 }
 
+val OPEN_WEATHER_KEY: String by project
+
 android {
     namespace = "com.kennysexton.a5dayforecast"
     compileSdk = 34
@@ -20,6 +22,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField("String", "OPEN_WEATHER_KEY", OPEN_WEATHER_KEY)
     }
 
     buildTypes {

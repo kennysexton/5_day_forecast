@@ -21,10 +21,10 @@ data class WeatherData(
 )
 
 data class MainWeatherMetrics(
-    val temp: Long,
-    val feels_like: Long,
-    val temp_min: Long,
-    val temp_max: Long,
+    val temp: Double,
+    val feels_like: Double,
+    val temp_min: Double,
+    val temp_max: Double,
     val pressure: Int,
     val sea_level: Int,
     val grnd_level: Int,
