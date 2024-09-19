@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">5 day forecast</string>
+    <string name="search_instructions">Enter a zip code to search</string>"
 </resources>
