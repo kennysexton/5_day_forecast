@@ -10,6 +10,7 @@ interface OpenWeatherInterface {
     @GET("forecast")
     suspend fun getWeatherForecast(
         @Query("zip") zipCode: String,
-        @Query("appid") apiKey: String
+        @Query("appid") apiKey: String,
+        @Query("units") units: String = "imperial" // default to Fahrenheit
     ): Response<WeatherResponse>
 }

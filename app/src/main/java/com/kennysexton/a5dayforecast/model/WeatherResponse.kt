@@ -12,7 +12,7 @@ data class WeatherResponse(
 data class WeatherData(
     val dt: Long,
     val main: MainWeatherMetrics,
-//    val weather: WeatherIcon,
+    val weather: List<WeatherIcon>,
 //    val wind: Wind,
 //    val clouds: Clouds,
     val visibility: Int,
@@ -31,6 +31,13 @@ data class MainWeatherMetrics(
     val grnd_level: Int,
     val humidity: Int,
     val temp_kf: Double
+)
+
+data class WeatherIcon(
+    val id: Int,
+    val main: String,
+    val description: String,
+    val icon: String
 )
 
 data class City(
