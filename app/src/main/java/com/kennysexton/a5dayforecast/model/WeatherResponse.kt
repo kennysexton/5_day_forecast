@@ -6,6 +6,7 @@ data class WeatherResponse(
     val message: Int,
     val cnt: Int,
     val list: List<WeatherData>,
+    val city: City
 )
 
 data class WeatherData(
@@ -30,4 +31,9 @@ data class MainWeatherMetrics(
     val grnd_level: Int,
     val humidity: Int,
     val temp_kf: Double
+)
+
+data class City(
+    val name: String,
+    val country: String,
 )

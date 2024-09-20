@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.kennysexton.a5dayforecast.ui.components.ZipCodeSearch
+import com.kennysexton.a5dayforecast.ui.components.MainUI
 import com.kennysexton.a5dayforecast.ui.theme.WeatherForecastTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             WeatherForecastTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ZipCodeSearch(innerPadding)
+                    MainUI(innerPadding)
                 }
             }
         }

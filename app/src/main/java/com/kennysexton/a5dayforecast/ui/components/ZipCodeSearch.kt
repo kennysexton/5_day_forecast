@@ -19,29 +19,35 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kennysexton.a5dayforecast.R
-import com.kennysexton.a5dayforecast.WeatherLandingVM
+import com.kennysexton.a5dayforecast.WeatherSearchVM
 
 @Composable
-fun ZipCodeSearch(innerPadding: PaddingValues) {
+fun ZipCodeSearch(vm: WeatherSearchVM) {
 
-    val vm = hiltViewModel<WeatherLandingVM>()
+
     var zipCode by remember { mutableStateOf("") }
+//    var invalidZipCodeError by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
-            .padding(innerPadding)
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(stringResource(id = R.string.search_instructions), modifier = Modifier.padding(16.dp))
 
-        TextField(value = zipCode, onValueChange = { zipCode = it })
+        TextField(
+            value = zipCode,
+            // Only allow numbers and hyphens
+            onValueChange = { zipCode = it.replace(Regex("[^0-9-]"), "") })
 
-        // TODO: only enable search button if the user has entered in the right # of characters
-        Button(onClick = { vm.getWeatherForecast(zipCode) }, modifier = Modifier.padding(16.dp)) {
+        // Enable search button if the user has entered in at least 5 characters
+        Button(
+            onClick = { vm.getWeatherForecast(zipCode) },
+            modifier = Modifier.padding(16.dp),
+            enabled = vm.enableSearchButton(zipCode)
+        ) {
             Text(text = "Search")
         }
     }
-
 }
