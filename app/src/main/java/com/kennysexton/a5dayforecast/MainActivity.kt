@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
                                 backStackEntry.arguments?.getString("countryZipcode") ?: ""
                             ForecastDisplay(
                                 searchZipCode = searchZipCode,
-                                onBackButtonPressed = {/* TODO */ })
+                                onBackButtonPressed = { navController.popBackStack() })
                         }
 //                        composable<ForecastDetails> {
 //

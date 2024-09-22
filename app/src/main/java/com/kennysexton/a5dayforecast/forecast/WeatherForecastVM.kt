@@ -18,16 +18,19 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherForecastVM @Inject constructor(
     private val apiService: OpenWeatherInterface,
-    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-
-    private val zipCode = checkNotNull(savedStateHandle.get<String>("countryZipcode"))
 
     private val _weatherResponse = MutableStateFlow<WeatherForecastResponse?>(null)
     val weatherResponse: StateFlow<WeatherForecastResponse?> =
         _weatherResponse.asStateFlow()
 
+    private val _showLoading = MutableStateFlow(false)
+    val showLoading: StateFlow<Boolean> = _showLoading.asStateFlow()
+
     fun getWeatherForecast(countryZipcode: String) {
+        // Show Spinner
+        _showLoading.value = true
+
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response =
@@ -39,11 +42,14 @@ class WeatherForecastVM @Inject constructor(
                 if (response.isSuccessful) {
                     _weatherResponse.value = response.body()
                     println(response.body())
+                    _showLoading.value = false
                 } else {
                     Log.e("Networking", "failed call to OpenWeatherAPI")
+                    _showLoading.value = false
                 }
             } catch (e: Exception) {
                 Log.e("Networking", "exception when calling over network: ${e.message}")
+                _showLoading.value = false
             }
         }
     }
