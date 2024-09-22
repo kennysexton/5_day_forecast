@@ -1,4 +1,4 @@
-package com.kennysexton.a5dayforecast.ui.components
+package com.kennysexton.a5dayforecast.search
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,15 +16,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.kennysexton.a5dayforecast.R
-import com.kennysexton.a5dayforecast.WeatherSearchVM
 
 @Composable
-fun ZipCodeSearch(vm: WeatherSearchVM) {
+fun ZipcodeSearchUI(
+    navigateToForecast: (String) -> Unit
+) {
 
+    val vm = hiltViewModel<ZipcodeSearchVM>()
 
-    var zipCode by remember { mutableStateOf("") }
-//    var invalidZipCodeError by remember { mutableStateOf(false) }
+    var zipcode by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -35,15 +37,15 @@ fun ZipCodeSearch(vm: WeatherSearchVM) {
         Text(stringResource(id = R.string.search_instructions), modifier = Modifier.padding(16.dp))
 
         TextField(
-            value = zipCode,
+            value = zipcode,
             // Only allow numbers and hyphens
-            onValueChange = { zipCode = it.replace(Regex("[^0-9-]"), "") })
+            onValueChange = { zipcode = it.replace(Regex("[^0-9-]"), "") })
 
         // Enable search button if the user has entered in at least 5 characters
         Button(
-            onClick = { vm.getWeatherForecast(zipCode) },
+            onClick = { navigateToForecast(vm.getCountryCode(zipcode)) },
             modifier = Modifier.padding(16.dp),
-            enabled = vm.enableSearchButton(zipCode)
+            enabled = vm.enableSearchButton(zipcode)
         ) {
             Text(text = "Search")
         }

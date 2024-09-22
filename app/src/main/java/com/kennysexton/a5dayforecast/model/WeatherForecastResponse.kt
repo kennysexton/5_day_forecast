@@ -1,7 +1,9 @@
 package com.kennysexton.a5dayforecast.model
 
+import kotlinx.serialization.Serializable
 
-data class WeatherResponse(
+@Serializable
+data class WeatherForecastResponse(
     val cod: String,
     val message: Int,
     val cnt: Int,
@@ -9,6 +11,7 @@ data class WeatherResponse(
     val city: City
 )
 
+@Serializable
 data class WeatherData(
     val dt: Long,
     val main: MainWeatherMetrics,
@@ -21,6 +24,7 @@ data class WeatherData(
     val dt_txt: String
 )
 
+@Serializable
 data class MainWeatherMetrics(
     val temp: Double,
     val feels_like: Double,
@@ -33,6 +37,7 @@ data class MainWeatherMetrics(
     val temp_kf: Double
 )
 
+@Serializable
 data class WeatherIcon(
     val id: Int,
     val main: String,
@@ -40,6 +45,7 @@ data class WeatherIcon(
     val icon: String
 )
 
+@Serializable
 data class City(
     val name: String,
     val country: String,
