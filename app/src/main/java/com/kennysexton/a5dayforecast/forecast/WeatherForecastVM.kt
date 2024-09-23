@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.kennysexton.a5dayforecast.BuildConfig
 import com.kennysexton.a5dayforecast.model.OpenWeatherInterface
 import com.kennysexton.a5dayforecast.model.WeatherForecastResponse
-import com.kennysexton.a5dayforecast.navigation.NavigationArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
