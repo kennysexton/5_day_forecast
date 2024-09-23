@@ -8,15 +8,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.kennysexton.a5dayforecast.forecast.ForecastDisplay
-import com.kennysexton.a5dayforecast.forecast.WeatherForecastVM
-import com.kennysexton.a5dayforecast.navigation.NavigationRoutes
+import com.kennysexton.a5dayforecast.navigation.WeatherForecast
+import com.kennysexton.a5dayforecast.navigation.ZipcodeSearch
 import com.kennysexton.a5dayforecast.search.ZipcodeSearchUI
 import com.kennysexton.a5dayforecast.ui.theme.WeatherForecastTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,22 +30,15 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = NavigationRoutes.ZipCodeSearch.route,
+                        startDestination = ZipcodeSearch,
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        composable(route = NavigationRoutes.ZipCodeSearch.route) {
+                        composable<ZipcodeSearch> {
                             ZipcodeSearchUI(navigateToForecast = { countryZipcode ->
-                                navController.navigate("${NavigationRoutes.WeatherForecast.route}?countryZipcode=${countryZipcode}")
+                                navController.navigate(WeatherForecast(countryZipcode))
                             })
                         }
-                        composable(
-                            route = "${NavigationRoutes.WeatherForecast.route}?countryZipcode={countryZipcode}",
-                            arguments = listOf(
-                                navArgument("countryZipcode") {
-                                    type = NavType.StringType
-                                }
-                            )
-                        ) {
+                        composable<WeatherForecast> {
                             ForecastDisplay(
                                 onBackButtonPressed = { navController.popBackStack() })
                         }

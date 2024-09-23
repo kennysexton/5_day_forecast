@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.kennysexton.a5dayforecast.BuildConfig
 import com.kennysexton.a5dayforecast.model.OpenWeatherInterface
 import com.kennysexton.a5dayforecast.model.WeatherForecastResponse
+import com.kennysexton.a5dayforecast.navigation.WeatherForecast
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,21 +20,21 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherForecastVM @Inject constructor(
     private val apiService: OpenWeatherInterface,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val searchZipCode = savedStateHandle.get<String>("countryZipcode") ?: ""
+    private val countryZipcode = savedStateHandle.toRoute<WeatherForecast>().countryZipcode
 
     private val _weatherResponse = MutableStateFlow<WeatherForecastResponse?>(null)
     val weatherResponse: StateFlow<WeatherForecastResponse?> =
         _weatherResponse.asStateFlow()
 
-
     private val _showLoading = MutableStateFlow(false)
     val showLoading: StateFlow<Boolean> = _showLoading.asStateFlow()
 
+
     init {
-        getWeatherForecast(searchZipCode)
+        getWeatherForecast(countryZipcode)
     }
 
     fun getWeatherForecast(countryZipcode: String) {
