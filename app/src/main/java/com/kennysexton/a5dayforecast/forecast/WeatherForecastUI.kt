@@ -29,6 +29,7 @@ import com.kennysexton.a5dayforecast.ui.components.WeatherForecastItem
 fun ForecastDisplay(onBackButtonPressed: () -> Unit) {
 
     val vm = hiltViewModel<WeatherForecastVM>()
+
     val weatherData by vm.weatherResponse.collectAsState()
     val isLoading by vm.showLoading.collectAsState()
 
