@@ -17,7 +17,6 @@ import androidx.navigation.navArgument
 import com.kennysexton.a5dayforecast.forecast.ForecastDisplay
 import com.kennysexton.a5dayforecast.forecast.WeatherForecastVM
 import com.kennysexton.a5dayforecast.navigation.NavigationRoutes
-import com.kennysexton.a5dayforecast.navigation.ZipcodeSearch
 import com.kennysexton.a5dayforecast.search.ZipcodeSearchUI
 import com.kennysexton.a5dayforecast.ui.theme.WeatherForecastTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,10 +33,10 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = ZipcodeSearch,
+                        startDestination = NavigationRoutes.ZipCodeSearch.route,
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        composable<ZipcodeSearch> {
+                        composable(route = NavigationRoutes.ZipCodeSearch.route) {
                             ZipcodeSearchUI(navigateToForecast = { countryZipcode ->
                                 navController.navigate("${NavigationRoutes.WeatherForecast.route}?countryZipcode=${countryZipcode}")
                             })
@@ -50,9 +49,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         ) {
-                            val vm = hiltViewModel<WeatherForecastVM>()
                             ForecastDisplay(
-                                vm = vm,
                                 onBackButtonPressed = { navController.popBackStack() })
                         }
                     }
