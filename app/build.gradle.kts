@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlinx.serialization.json)
-//    alias(libs.plugins.parcelize)
 }
 
 val OPEN_WEATHER_KEY: String by project

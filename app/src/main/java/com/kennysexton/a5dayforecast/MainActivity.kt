@@ -46,9 +46,6 @@ class MainActivity : ComponentActivity() {
                                 searchZipCode = searchZipCode,
                                 onBackButtonPressed = { navController.popBackStack() })
                         }
-//                        composable<ForecastDetails> {
-//
-//                        }
                     }
                 }
             }

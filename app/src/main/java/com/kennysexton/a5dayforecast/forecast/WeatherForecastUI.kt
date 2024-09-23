@@ -14,12 +14,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kennysexton.a5dayforecast.model.WeatherData
+import com.kennysexton.a5dayforecast.ui.components.ForecastDetails
 import com.kennysexton.a5dayforecast.ui.components.ProgressIndicator
-import kotlin.math.roundToInt
+import com.kennysexton.a5dayforecast.ui.components.WeatherForecastItem
 
 @Composable
 fun ForecastDisplay(searchZipCode: String, onBackButtonPressed: () -> Unit) {
@@ -28,6 +32,8 @@ fun ForecastDisplay(searchZipCode: String, onBackButtonPressed: () -> Unit) {
     val weatherData by vm.weatherResponse.collectAsState()
     val isLoading by vm.showLoading.collectAsState()
 
+    var selectedDay by rememberSaveable { mutableStateOf<WeatherData?>(null) }
+
     vm.getWeatherForecast(searchZipCode)
 
     if (isLoading) {
@@ -35,7 +41,10 @@ fun ForecastDisplay(searchZipCode: String, onBackButtonPressed: () -> Unit) {
     } else {
         Column(modifier = Modifier.padding(16.dp)) {
             Row() {
-                IconButton(onClick = { onBackButtonPressed() }) {
+                IconButton(onClick = {
+                    // go back to list view if in details view
+                    if (selectedDay != null) selectedDay = null else onBackButtonPressed()
+                }) {
                     Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
                 }
                 Text(
@@ -45,34 +54,30 @@ fun ForecastDisplay(searchZipCode: String, onBackButtonPressed: () -> Unit) {
                 )
             }
 
-            LazyColumn {
-                weatherData?.list?.let {
-                    items(it.filterIndexed { index, _ ->
-                        // The openweather forecast call returns every 3 hours,
-                        // To get the next days time, we show every 8th item
-                        // [0] Day 0 18:00
-                        // [1] Day 0 21:00
-                        // [2] Day 1 00:00
-                        // ...
-                        // [8] Day 1 18:00
-                        index % 8 == 0
-                    }
-                    ) { forecastItem ->
-                        WeatherForecastItem(forecastItem)
+            if (selectedDay != null) {
+                ForecastDetails(selectedDay)
+            } else {
+                LazyColumn {
+                    weatherData?.list?.let {
+                        items(it.filterIndexed { index, _ ->
+                            // The openweather forecast call returns every 3 hours,
+                            // To get the next days time, we show every 8th item
+                            // [0] Day 0 18:00
+                            // [1] Day 0 21:00
+                            // [2] Day 1 00:00
+                            // ...
+                            // [8] Day 1 18:00
+                            index % 8 == 0
+                        }
+                        ) { forecastItem ->
+                            WeatherForecastItem(
+                                forecastItem,
+                                // When a row is clicked, view the details of that row
+                                onRowClicked = { weatherData -> selectedDay = weatherData })
+                        }
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun WeatherForecastItem(forecastItem: WeatherData) {
-    Column(modifier = Modifier.padding(bottom = 16.dp)) {
-        // UTC by default. If this was a production app we would convert to the local time of the area
-        Text(forecastItem.dt_txt)
-        Text("${forecastItem.main.temp.roundToInt()}°F")
-        Text(forecastItem.weather.first().description)
-
     }
 }
