@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherForecastVM @Inject constructor(
     private val apiService: OpenWeatherInterface,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val countryZipcode = savedStateHandle.toRoute<WeatherForecast>().countryZipcode
