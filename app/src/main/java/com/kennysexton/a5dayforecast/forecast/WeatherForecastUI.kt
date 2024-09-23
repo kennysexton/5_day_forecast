@@ -19,22 +19,18 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.kennysexton.a5dayforecast.model.WeatherData
 import com.kennysexton.a5dayforecast.ui.components.ForecastDetails
 import com.kennysexton.a5dayforecast.ui.components.ProgressIndicator
 import com.kennysexton.a5dayforecast.ui.components.WeatherForecastItem
 
 @Composable
-fun ForecastDisplay(searchZipCode: String, onBackButtonPressed: () -> Unit) {
+fun ForecastDisplay(vm: WeatherForecastVM, onBackButtonPressed: () -> Unit) {
 
-    val vm = hiltViewModel<WeatherForecastVM>()
     val weatherData by vm.weatherResponse.collectAsState()
     val isLoading by vm.showLoading.collectAsState()
 
     var selectedDay by rememberSaveable { mutableStateOf<WeatherData?>(null) }
-
-    vm.getWeatherForecast(searchZipCode)
 
     if (isLoading) {
         ProgressIndicator()
@@ -48,7 +44,7 @@ fun ForecastDisplay(searchZipCode: String, onBackButtonPressed: () -> Unit) {
                     Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
                 }
                 Text(
-                    text = weatherData?.city?.name ?: searchZipCode,
+                    text = weatherData?.city?.name ?: "",
                     modifier = Modifier.padding(bottom = 16.dp),
                     style = MaterialTheme.typography.displayMedium
                 )

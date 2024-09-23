@@ -8,11 +8,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.kennysexton.a5dayforecast.forecast.ForecastDisplay
-import com.kennysexton.a5dayforecast.navigation.WeatherForecast
+import com.kennysexton.a5dayforecast.forecast.WeatherForecastVM
+import com.kennysexton.a5dayforecast.navigation.NavigationRoutes
 import com.kennysexton.a5dayforecast.navigation.ZipcodeSearch
 import com.kennysexton.a5dayforecast.search.ZipcodeSearchUI
 import com.kennysexton.a5dayforecast.ui.theme.WeatherForecastTheme
@@ -35,15 +39,20 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable<ZipcodeSearch> {
                             ZipcodeSearchUI(navigateToForecast = { countryZipcode ->
-                                navController.navigate(WeatherForecast(countryZipcode))
+                                navController.navigate("${NavigationRoutes.WeatherForecast.route}?countryZipcode=${countryZipcode}")
                             })
                         }
-                        composable<WeatherForecast> { backStackEntry ->
-
-                            val searchZipCode: String =
-                                backStackEntry.arguments?.getString("countryZipcode") ?: ""
+                        composable(
+                            route = "${NavigationRoutes.WeatherForecast.route}?countryZipcode={countryZipcode}",
+                            arguments = listOf(
+                                navArgument("countryZipcode") {
+                                    type = NavType.StringType
+                                }
+                            )
+                        ) {
+                            val vm = hiltViewModel<WeatherForecastVM>()
                             ForecastDisplay(
-                                searchZipCode = searchZipCode,
+                                vm = vm,
                                 onBackButtonPressed = { navController.popBackStack() })
                         }
                     }
