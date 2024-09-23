@@ -38,12 +38,8 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate(WeatherForecast(countryZipcode))
                             })
                         }
-                        composable<WeatherForecast> { backStackEntry ->
-
-                            val searchZipCode: String =
-                                backStackEntry.arguments?.getString("countryZipcode") ?: ""
+                        composable<WeatherForecast> {
                             ForecastDisplay(
-                                searchZipCode = searchZipCode,
                                 onBackButtonPressed = { navController.popBackStack() })
                         }
                     }

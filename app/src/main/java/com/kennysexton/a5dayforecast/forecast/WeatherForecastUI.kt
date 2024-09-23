@@ -26,15 +26,13 @@ import com.kennysexton.a5dayforecast.ui.components.ProgressIndicator
 import com.kennysexton.a5dayforecast.ui.components.WeatherForecastItem
 
 @Composable
-fun ForecastDisplay(searchZipCode: String, onBackButtonPressed: () -> Unit) {
+fun ForecastDisplay(onBackButtonPressed: () -> Unit) {
 
     val vm = hiltViewModel<WeatherForecastVM>()
     val weatherData by vm.weatherResponse.collectAsState()
     val isLoading by vm.showLoading.collectAsState()
 
     var selectedDay by rememberSaveable { mutableStateOf<WeatherData?>(null) }
-
-    vm.getWeatherForecast(searchZipCode)
 
     if (isLoading) {
         ProgressIndicator()
@@ -48,7 +46,7 @@ fun ForecastDisplay(searchZipCode: String, onBackButtonPressed: () -> Unit) {
                     Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
                 }
                 Text(
-                    text = weatherData?.city?.name ?: searchZipCode,
+                    text = weatherData?.city?.name ?: "",
                     modifier = Modifier.padding(bottom = 16.dp),
                     style = MaterialTheme.typography.displayMedium
                 )
