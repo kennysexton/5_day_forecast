@@ -37,7 +37,11 @@ class WeatherForecastVM @Inject constructor(
         getWeatherForecast(countryZipcode)
     }
 
-    fun getWeatherForecast(countryZipcode: String) {
+    /**
+     * If this was a production app. A better approach would be creating response states
+     * such as Response.Loading, Response.Success and Response.Error
+     */
+    private fun getWeatherForecast(countryZipcode: String) {
         // Show Spinner
         _showLoading.value = true
 

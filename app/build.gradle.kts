@@ -66,7 +66,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit)
+    testImplementation(libs.hilt.testing)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -87,6 +89,10 @@ dependencies {
     // Compose Navigation (with serialization)
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+
+    // Mockito
+    testImplementation(libs.mockito)
+    kaptTest(libs.mockito)
 }
 
 // Allow references to generated code
